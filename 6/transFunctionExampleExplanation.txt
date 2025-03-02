@@ -1,0 +1,14 @@
+Example and explanation of how the trans function
+works
+
+Sure, let's take the example of Mul(Const 2.0, Add(X, Const 3.0)) with flt set to 1.0.
+
+We call toPostfix with Mul(Const 2.0, Add(X, Const 3.0)).
+Since the first expression in the pattern matching is a Mul, we execute the corresponding code: toPostfix (Const 2.0) @ toPostfix (Add(X, Const 3.0)) @ [MULT].
+We now recursively call toPostfix with Const 2.0. Since it is a Const, we append [PUSH 2.0] to the postfix expression.
+We now recursively call toPostfix with Add(X, Const 3.0). Since it is an Add, we execute the corresponding code: toPostfix X @ toPostfix (Const 3.0) @ [ADD].
+We now recursively call toPostfix with X. Since it is an X, we append [PUSH flt] to the postfix expression. Since flt is 1.0, the resulting postfix expression is [PUSH 1.0].
+We now recursively call toPostfix with Const 3.0. Since it is a Const, we append [PUSH 3.0] to the postfix expression.
+We concatenate the postfix expressions obtained in steps 3, 5, and 6 using the @ operator: [PUSH 2.0] @ [PUSH 1.0] @ [PUSH 3.0] @ [ADD].
+Finally, we append [MULT] to the postfix expression obtained in step 2: [PUSH 2.0] @ [PUSH 1.0] @ [PUSH 3.0] @ [ADD] @ [MULT].
+The resulting postfix expression is [PUSH 2.0] @ [PUSH 1.0] @ [PUSH 3.0] @ [ADD] @ [MULT], which corresponds to the program that evaluates Mul(Const 2.0, Add(X, Const 3.0)) with flt set to 1.0.
